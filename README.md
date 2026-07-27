@@ -3,21 +3,15 @@
 
 ## Aim
 
-Write your aim here.
-
-Example:
-
-> To identify a real-world sequential decision-making problem and represent it formally as a Markov Decision Process by defining its states, actions, rewards, transitions, and Python representation.
+To model a Personalized Adaptive Tutoring System as a Markov Decision Process by formally defining its state space, action space, transition dynamics, reward function, and Python dictionary representation.
 
 ---
 
 ## Problem Statement
 
 ### Problem Description
-
-Write your answer here.
-
-Describe the real-world application that you selected.
+Online learning platforms often deliver static content that fails to adjust to individual student pace, leading to boredom or frustation and dropout.
+We design an adaptive AI tutoring agent that sequentially selects practice problem topics and difficulty levels for a student learning a subject by observing their proficiency levels and recent correctness. 
 
 
 ---
@@ -36,111 +30,72 @@ Where:
 |---|---|
 | $S$ | Set of states |
 | $A$ | Set of actions |
-| $P$ | Transition probability function |
-| $R$ | Reward function |
-| $\gamma$ | Discount factor |
+| $P$ | Transition probability function $P(s' \mid s, a)$ |
+| $R$ | Reward function $R(s, a, s')$ |
+| $\gamma$ | Discount factor ($\gamma \in [0, 1]$) |
 
 ---
 
 ## State Space
 
-Write your answer here.
+The state space represents the student's estimated mastery level (Low, Medium, High) combined with their outcome on the previous exercise (Incorrect, Correct).
 
-The state space should list all possible situations in which the agent can exist.
-
-Example format:
-
-```text
+```
 S = {
-    State 1,
-    State 2,
-    State 3,
-    ...
+    (Low, Incorrect),
+    (Low, Correct),
+    (Medium, Incorrect),
+    (Medium, Correct),
+    (High, Incorrect),
+    (High, Correct)
 }
 ```
-
-
-
----
 
 ## Sample State
 
-Write your answer here.
+s = (Medium, Correct) — The student currently possesses Medium topic mastery and answered the most recent problem correctly.
 
-A sample state is one specific example from the state space.
-
-
-
----
 
 ## Action Space
 
-Write your answer here.
+The action space consists of the teaching decision selected by the AI tutor for the next exercise:
 
-The action space should list all possible actions available to the agent.
-
-Example format:
-
-```text
+```
 A = {
-    Action 1,
-    Action 2,
-    Action 3,
-    ...
+    Remediate_Easy,    # Provide an easy problem / review basic concepts
+    Practice_Medium,   # Provide a standard, medium-difficulty problem
+    Challenge_Hard     # Provide a challenging, advanced problem
 }
 ```
 
-
----
-
 ## Sample Action
 
-Write your answer here.
+a = Practice_Medium — The AI tutor chooses to give the student a medium-difficulty problem.
 
-A sample action is one action selected from the action space.
-
-
-
----
 
 ## Transition Probability
 
-Write your answer here.
+The transition probability explains how the student's state evolves from $s$ to $s'$ after receiving an exercise type $a$:
+$$P(s' \mid s, a)$$
 
-The transition probability explains how the environment moves from one state to another after an action is taken.
+If a student in (Low, Correct) is given Practice_Medium, there is a high probability ($P = 0.70$) they transition to (Medium, Correct) as their skill increases, and a smaller probability ($P = 0.30$) they fail and transition to (Medium, Incorrect).
 
-General form:
+If given an exercise that is too difficult (Challenge_Hard in a Low state), the probability of failure and falling back to (Low, Incorrect) is high ($P = 0.85$).Reward Function
 
-$$
-P(s' \mid s,a)
-$$
-
-This means:
-
-> Probability of reaching next state $s'$ after taking action $a$ in current state $s$.
-
-
----
 
 ## Reward Function
 
-Write your answer here.
+The reward function $R(s, a, s')$ gives positive feedback when student mastery increases and penalizes decisions that cause frustration (overwhelming the student) or boredom (under-challenging the student):
 
-The reward function defines the feedback received by the agent after taking an action.
+$+10$: Transitioning to a higher mastery state (e.g., Medium $\rightarrow$ High)
 
-General form:
+$+2$: Maintaining practice at the appropriate skill level (e.g., Medium state given Practice_Medium)
 
-$$
-R(s,a,s')
-$$
+$-5$: Giving an overly hard problem to a struggling student, causing frustration (e.g., Low state given Challenge_Hard)
 
-
-
----
+$-3$: Giving an overly easy problem to an advanced student, causing boredom (e.g., High state given Remediate_Easy).
 
 ## Graphical Representation
-
-Write your answer here.
 
 Draw the MDP graph.
 
@@ -151,6 +106,7 @@ The graph should include:
 3. Rewards on transitions.
 4. Transition probabilities if applicable.
 
+<img width="1214" height="1295" alt="image" src="https://github.com/user-attachments/assets/747aa59d-37aa-49a0-81e0-f9e54711b3c0" />
 
 ---
 
@@ -163,8 +119,8 @@ Use Python dictionaries to represent the MDP.
 
 ```python
 # MDP Representation using Python
-# print("Name:       ")
-# print("Register Number:     ")
+# print("Name: THARUN SRIDHAR")
+# print("Register Number: 212223230230")
 
 ```
 ---
